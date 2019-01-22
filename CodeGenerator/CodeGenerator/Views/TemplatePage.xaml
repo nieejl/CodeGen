@@ -23,7 +23,7 @@
                 <ListView x:Name="VariablesList"
                           ItemsSource="{Binding Replacements}"
                           HorizontalOptions="Start"
-                          MinimumWidthRequest="240"
+                          MinimumWidthRequest="160"
                           RefreshCommand=""
                           IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                           IsPullToRefreshEnabled="True">

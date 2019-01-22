@@ -10,7 +10,8 @@ namespace CodeGenerator
 {
     public partial class App : Application
     {
-        public NavigationPage navPage { get; }
+        public NavigationPage navPage { get; private set; }
+
         public App()
         {
             InitializeComponent();
