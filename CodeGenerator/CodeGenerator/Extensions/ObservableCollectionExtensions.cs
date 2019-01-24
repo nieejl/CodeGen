@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CodeGenerator.Extensions
 {
-    static class ObservableCollectionExtensions
+    public static class ObservableCollectionExtensions
     {
         public static ObservableCollection<T> AsObservableCollection<T>(this IEnumerable<T> items) where T : class
         {

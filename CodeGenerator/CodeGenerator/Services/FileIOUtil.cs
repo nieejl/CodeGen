@@ -6,10 +6,10 @@ using System.Text;
 
 namespace CodeGenerator.Services
 {
-    public class FileImporter
+    public class FileIOUtil
     {
         private string RootDirectory;
-        public FileImporter()
+        public FileIOUtil()
         {
             RootDirectory = Directory.GetCurrentDirectory();
             Debug.WriteLine(RootDirectory);

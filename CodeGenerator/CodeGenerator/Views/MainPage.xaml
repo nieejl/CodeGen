@@ -3,7 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:CodeGenerator"
              x:Class="CodeGenerator.MainPage">
-
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="UWP, Android" Value="10, 0, 0, 0"/>
+            <On Platform="iOS" Value="0, 20, 0, 0"/>
+        </OnPlatform>
+    </ContentPage.Padding>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Item Text" 
+                     Icon="{OnPlatform 
+            Default='LargeTile.scale-400.png', 
+            UWP='Assets/Square44x44Logo.altform-unplated_targetsize-256.png',
+            Android='Resources/drawable/mipmap-xxxhdpi/icon'}" />
+    </ContentPage.ToolbarItems>
     <StackLayout>
         <Label Text="Templates" HorizontalOptions="Center"/>
         <!-- Place new controls here -->
