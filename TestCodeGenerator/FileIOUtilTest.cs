@@ -14,9 +14,8 @@ namespace TestCodeGenerator
         {
             string root = Directory.GetCurrentDirectory();
             string path = "123";
-            var ioUtil = new FileIOUtil();
 
-            var result = ioUtil.GetTargetPath(path);
+            var result = FileIOUtil.GetTargetPath(path);
 
             Assert.Equal(root + @"\" + path, result);
         }
@@ -25,10 +24,9 @@ namespace TestCodeGenerator
         public void Test_WriteToFile_Given_Existing_File_And_False_Returns_False() {
             string root = Directory.GetCurrentDirectory();
             string targetPath = Path.Combine(root, "wtf_false_test.txt");
-            var ioUtil = new FileIOUtil();
 
             File.WriteAllText(targetPath, "File not overwritten");
-            var result = ioUtil.WriteToFile(targetPath, "File Created");
+            var result = FileIOUtil.WriteToFile(targetPath, "File Created");
 
             Assert.False(result);
         }
@@ -38,10 +36,9 @@ namespace TestCodeGenerator
         {
             string root = Directory.GetCurrentDirectory();
             string targetPath = Path.Combine(root, "wtf_false_test.txt");
-            var ioUtil = new FileIOUtil();
 
             File.WriteAllText(targetPath, "File not overwritten");
-            ioUtil.WriteToFile(targetPath, "File Created", false);
+            FileIOUtil.WriteToFile(targetPath, "File Created", false);
             var result = File.ReadAllText(targetPath);
 
             Assert.Equal("File not overwritten", result);
@@ -52,10 +49,9 @@ namespace TestCodeGenerator
         {
             string root = Directory.GetCurrentDirectory();
             string targetPath = Path.Combine("wtf_exist_true_test.txt");
-            var ioUtil = new FileIOUtil();
             File.WriteAllText(targetPath, "File not overwritten");
 
-            ioUtil.WriteToFile(targetPath, "File Created", true);
+            FileIOUtil.WriteToFile(targetPath, "File Created", true);
             var result = File.ReadAllText(targetPath);
 
             Assert.Equal("File Created", result);
@@ -66,9 +62,8 @@ namespace TestCodeGenerator
         {
             string root = Directory.GetCurrentDirectory();
             string targetPath = Path.Combine("wtf_exist_true_test.txt");
-            var ioUtil = new FileIOUtil();
 
-            ioUtil.WriteToFile(targetPath, "File Created");
+            FileIOUtil.WriteToFile(targetPath, "File Created");
             var result = File.ReadAllText(targetPath);
 
             Assert.Equal("File Created", result);
@@ -79,10 +74,9 @@ namespace TestCodeGenerator
         {
             string root = Directory.GetCurrentDirectory();
             string targetPath = Path.Combine("ifts_exist_test.txt");
-            var ioUtil = new FileIOUtil();
 
             File.WriteAllText(targetPath, "File read");
-            var result = ioUtil.ImportFileToString(targetPath);
+            var result = FileIOUtil.ImportFileToString(targetPath);
 
             Assert.Equal("File read", result);
         }
@@ -92,9 +86,8 @@ namespace TestCodeGenerator
         {
             string root = Directory.GetCurrentDirectory();
             string targetPath = Path.Combine("ifts_non_existing_test.txt");
-            var ioUtil = new FileIOUtil();
 
-            var result = ioUtil.ImportFileToString(targetPath);
+            var result = FileIOUtil.ImportFileToString(targetPath);
 
             Assert.Equal("", result);
         }

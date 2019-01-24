@@ -15,7 +15,7 @@ namespace TestCodeGenerator
             var list = new List<string>() { "s1", "s2", "s3", "s1" };
             var expected = new List<string>() { "s1", "s2", "s3" };
 
-            var result = list.RemoveDuplicates();
+            var result = list.UnorderedRemoveDuplicates();
 
             var listsEqual = !result.Except(expected).Any() && !expected.Except(result).Any();
             Assert.True(result.Count == expected.Count && listsEqual);

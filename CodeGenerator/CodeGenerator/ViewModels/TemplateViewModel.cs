@@ -48,13 +48,17 @@ namespace CodeGenerator.ViewModels
         {
             IsFromGeneration = true;
             Template = template;
-            Replacements = template.FindReplacements().AsObservableCollection();
-            GeneratedContent = template.GenerateContent(Replacements);
-            ReplacementChangedEventHandler();
+
+            var replacements = template.FindReplacements();
+            GeneratedContent = template.GenerateContent(replacements);
+            var rvms = replacements.Select(r => new ReplacementViewModel(r));
+            Replacements = rvms.AsObservableCollection();
+            AddReplacementChangedEventHandler();
+
             IsFromGeneration = false;
         }
 
-        public void ReplacementChangedEventHandler()
+        public void AddReplacementChangedEventHandler()
         {
             foreach (object item in Replacements)
             {
@@ -70,7 +74,7 @@ namespace CodeGenerator.ViewModels
         {
             var send = (ReplacementViewModel)sender;
             IsFromGeneration = true;
-            GeneratedContent = Template.GenerateContent(Replacements);
+            GeneratedContent = Template.GenerateContent(Replacements.Select(rvm => rvm.Replacement));
             IsFromGeneration = false;
         }
 

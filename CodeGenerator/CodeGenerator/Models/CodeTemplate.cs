@@ -14,22 +14,39 @@ namespace CodeGenerator.Models
         public string Description { get; set; }
         public string Content { get; set; }
 
-        public List<ReplacementViewModel> FindReplacements()
+        public static CodeTemplate FromString(string text)
+        {
+            string[] parts = text.Split(new char[] { '\n' });
+            string id = parts[0];
+            string description = parts[1];
+
+            var contentParts = parts.Skip(2);
+            var sb = new StringBuilder();
+            foreach (string part in contentParts)
+            {
+                sb.AppendLine(part);
+            }
+            string content = sb.ToString();
+
+            return new CodeTemplate { Id = id, Description = description, Content = content };
+        }
+
+        public List<Replacement> FindReplacements()
         {
             var templateReplacements = Regex.Matches(Content, @"<<<<([\d\w\s]+)>>>>.*?");
-            var replacements = new List<ReplacementViewModel>();
+            var replacements = new List<Replacement>();
             foreach (Match m in templateReplacements)
             {
                 var group = m.Groups[1];
-                replacements.Add(new ReplacementViewModel { VarName = group.Value, VarValue = "" });
+                replacements.Add(new Replacement { VarName = group.Value, VarValue = "" });
             }
             return replacements;
         }
 
-        public List<ReplacementViewModel> FindAndFilterSimilarReplacements()
+        public List<Replacement> FindAndFilterSimilarReplacements()
         {
-            var replacements = FindReplacements().RemoveDuplicates();
-            var similarities = new List<(ReplacementViewModel, ReplacementViewModel)>();
+            var replacements = FindReplacements().UnorderedRemoveDuplicates();
+            var similarities = new List<(Replacement, Replacement)>();
             for (int i = 0; i < replacements.Count; i++)
             {
                 for (int j = 0; j < replacements.Count; j++)
@@ -47,12 +64,15 @@ namespace CodeGenerator.Models
         }
 
 
-        public string GenerateContent(IEnumerable<ReplacementViewModel> replacements)
+        public string GenerateContent(IEnumerable<Replacement> replacements)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(Content);
-            foreach (ReplacementViewModel replacement in replacements)
+            foreach (Replacement replacement in replacements)
             {
+                if (replacement == null || replacement.ContainsNullOrEmpty())
+                    continue;
+
                 var orgPattern = @"<<<<" + replacement.VarName + ">>>>";
                 sb.Replace(orgPattern, replacement.VarValue);
                 var res = sb.ToString();

@@ -1,4 +1,5 @@
-﻿using CodeGenerator.ViewModels;
+﻿using CodeGenerator.Models;
+using CodeGenerator.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,25 +10,40 @@ namespace CodeGenerator.ViewModels
 {
     public class ReplacementViewModel : INotifyPropertyChanged
     {
-        private string _varName;
-        public string VarName {
+        public ReplacementViewModel(Replacement replacement)
+        {
+            Replacement = replacement;
+        }
+
+        private Replacement _replacement;
+        public Replacement Replacement {
             get {
-                return _varName;
+                return _replacement;
             }
             set {
-                _varName = value;
+                _replacement = value;
+                OnPropertyChanged("Replacement");
+                OnPropertyChanged("VarName");
+                OnPropertyChanged("VarValue");
+            }
+        }
+        public string VarName {
+            get {
+                return Replacement.VarName;
+            }
+            set {
+                Replacement.VarName = value;
                 OnPropertyChanged("VarName");
             }
         }
-        private string _varValue;
 
 
         public string VarValue {
             get {
-                return _varValue;
+                return Replacement.VarValue;
             }
             set {
-                _varValue = value;
+                Replacement.VarValue = value;
                 OnPropertyChanged("VarValue");
             }
         }

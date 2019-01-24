@@ -8,19 +8,12 @@ namespace CodeGenerator.Services
 {
     public class FileIOUtil
     {
-        private string RootDirectory;
-        public FileIOUtil()
+        public static string GetTargetPath(string subPath)
         {
-            RootDirectory = Directory.GetCurrentDirectory();
-            Debug.WriteLine(RootDirectory);
+            return Path.Combine(new string[] { Directory.GetCurrentDirectory(), subPath });
         }
 
-        public string GetTargetPath(string subPath)
-        {
-            return Path.Combine(new string[] { RootDirectory, subPath });
-        }
-
-        public bool WriteToFile(string targetPath, string content, bool overwrite = false)
+        public static bool WriteToFile(string targetPath, string content, bool overwrite = false)
         {
             if (File.Exists(targetPath) && !overwrite)
                 return false;
@@ -28,12 +21,28 @@ namespace CodeGenerator.Services
             return true;
         }
 
-        public string ImportFileToString(string path)
+        public static string ImportFileToString(string path)
         {
             if (!File.Exists(path))
                 return "";
             var stringContent = File.ReadAllText(path);
             return stringContent;
+        }
+
+        public static bool DeleteFile(string path)
+        {
+            if (!File.Exists(path))
+                return false;
+            try
+            {
+                File.Delete(path);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.ToString());
+                return false;
+            }
         }
     }
 }

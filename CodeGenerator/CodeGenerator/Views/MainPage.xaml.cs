@@ -20,9 +20,9 @@ namespace CodeGenerator
             BindingContext = _vm;
         }
 
-        public async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        public async void OnItemTapped(object sender, ItemTappedEventArgs args)
         {
-            var item = args.SelectedItem as CodeTemplate;
+            var item = args.Item as CodeTemplate;
             if (item == null)
                 return;
             var nav = (Application.Current as App).navPage;
