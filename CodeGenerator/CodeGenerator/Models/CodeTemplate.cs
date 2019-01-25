@@ -44,10 +44,11 @@ namespace CodeGenerator.Models
             return replacements;
         }
 
-        public List<Replacement> FindAndFilterSimilarReplacements()
+        public List<IReplacement> FindAndFilterSimilarReplacements()
         {
             var replacements = FindReplacements().UnorderedRemoveDuplicates();
-
+            var filteredReplacements = new List<IReplacement>();
+            var added = new HashSet<int>();
             for (int i = 0; i < replacements.Count; i++)
             {
                 for (int j = i+1; j < replacements.Count; j++)
@@ -55,42 +56,33 @@ namespace CodeGenerator.Models
                     if (i == j) continue;
                     var s1 = replacements[i].VarName;
                     var s2 = replacements[j].VarName;
-                    if (s1.IsMatchWithUnderscore(s2) || s2.IsMatchWithUnderscore(s1))
+                    if (s1.ToLower() == s2.ToLower() && !added.Contains(i) && !added.Contains(j))
                     {
-                        var pair = new ReplacementPair { }
-                        similarities.Add((replacements[i], replacements[j]));
+                        var pair = new ReplacementPair (replacements[i], replacements[j]);
+                        filteredReplacements.Add(pair);
+                        added.Add(i);
+                        added.Add(j);
                     }
                 }
-            }
-            return replacements;
-            for (int i = 0; i < replacements.Count; i++)
-            {
-                for (int j = 0; j < replacements.Count; j++)
+                if (!added.Contains(i))
                 {
-                    if (i == j) continue;
-                    var s1 = replacements[i].VarName;
-                    var s2 = replacements[j].VarName;
-                    if (s1.IsMatchWithUnderscore(s2))
-                    {
-                        similarities.Add( (replacements[i], replacements[j]) );
-                    }
+                    filteredReplacements.Add(replacements[i]);
                 }
             }
-            return null;
+            return filteredReplacements;
         }
 
 
-        public string GenerateContent(IEnumerable<Replacement> replacements)
+        public string GenerateContent(IEnumerable<IReplacement> replacements)
         {
+            //var replacements = FindAndFilterSimilarReplacements();
             StringBuilder sb = new StringBuilder();
             sb.Append(Content);
-            foreach (Replacement replacement in replacements)
+            foreach (IReplacement replacement in replacements)
             {
                 if (replacement == null || replacement.ContainsNullOrEmpty())
                     continue;
-
-                var orgPattern = @"<<<<" + replacement.VarName + ">>>>";
-                sb.Replace(orgPattern, replacement.VarValue);
+                sb = replacement.ReplaceInString(sb);
             }
             return sb.ToString();
         }

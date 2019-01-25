@@ -49,14 +49,6 @@ namespace CodeGenerator.ViewModels
         public ObservableCollection<ReplacementViewModel> Replacements { get; set; }
         public ReplacementViewModel SelectedItem { get; set; }
 
-        public ReplacementViewModel GetNextIndex()
-        {
-            int index = Replacements.IndexOf(SelectedItem);
-            return index >= Replacements.Count ? 
-                Replacements[index] : 
-                Replacements[index + 1];
-        }
-
 
         public TemplateViewModel(CodeTemplate template)
         {

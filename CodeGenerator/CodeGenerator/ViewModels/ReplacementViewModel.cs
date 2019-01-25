@@ -10,21 +10,21 @@ namespace CodeGenerator.ViewModels
 {
     public class ReplacementViewModel : INotifyPropertyChanged
     {
-        public ReplacementViewModel(Replacement replacement)
+        public ReplacementViewModel(IReplacement replacement)
         {
             Replacement = replacement;
         }
 
-        private Replacement _replacement;
-        public Replacement Replacement {
+        private IReplacement _replacement;
+        public IReplacement Replacement {
             get {
                 return _replacement;
             }
             set {
                 _replacement = value;
                 OnPropertyChanged("Replacement");
-                OnPropertyChanged("VarName");
-                OnPropertyChanged("VarValue");
+                //OnPropertyChanged("VarName");
+                //OnPropertyChanged("VarValue");
             }
         }
         public string VarName {
