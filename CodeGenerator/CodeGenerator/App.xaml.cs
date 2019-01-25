@@ -4,6 +4,8 @@ using CodeGenerator.ViewModels;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Unity;
+using Unity.Injection;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace CodeGenerator
@@ -11,6 +13,7 @@ namespace CodeGenerator
     public partial class App : Application
     {
         public NavigationPage navPage { get; private set; }
+        public static UnityContainer Container { get; set; }
 
         public App()
         {
@@ -23,8 +26,30 @@ namespace CodeGenerator
 
         private void RegisterServices()
         {
-            DependencyService.Register<IDataStore<CodeTemplate>, MockDataStore>();
-            DependencyService.Register<MainPageViewModel>();
+            Container = new UnityContainer();
+            DependencyService.Register<IDirectory>();
+            //Container.RegisterType<IDirectory>(new InjectionConstructor(DependencyService.Get<IDirectory>()));
+            Container.RegisterType<IDataStore<CodeTemplate>, FlatFileDataStore>(
+                new InjectionConstructor(DependencyService.Get<IDirectory>()));
+            Container.RegisterType<MainPageViewModel>();
+            //DependencyService.Register<MainPageViewModel>();
+            
+        }
+        private void RegisterDeviceSpecificServices()
+        {
+            DependencyService.Register<IDirectory>();
+            switch (Device.RuntimePlatform)
+            {
+                case Device.UWP:
+                    break;
+                case Device.iOS:
+
+                    break;
+
+                case Device.Android:
+
+                    break;
+            }
         }
 
         protected override void OnStart()

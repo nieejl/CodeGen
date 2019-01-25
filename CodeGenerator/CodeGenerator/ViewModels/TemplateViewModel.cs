@@ -23,7 +23,9 @@ namespace CodeGenerator.ViewModels
                 OnPropertyChanged("Template");
             }
         }
+        // Handle for ignoring changes from non-generation
         public bool IsFromGeneration { get; set; }
+
         private string _generatedContent;
         public string GeneratedContent {
             get {
@@ -40,16 +42,29 @@ namespace CodeGenerator.ViewModels
         }
         public Command CopyButtonCommand => new Command(async () =>
         {
-            await Clipboard.SetTextAsync(GeneratedContent);
+            string output = GeneratedContent.Replace("\r\n\r\n", "\n");
+            await Clipboard.SetTextAsync(output);
         });
 
         public ObservableCollection<ReplacementViewModel> Replacements { get; set; }
+        public ReplacementViewModel SelectedItem { get; set; }
+
+        public ReplacementViewModel GetNextIndex()
+        {
+            int index = Replacements.IndexOf(SelectedItem);
+            return index >= Replacements.Count ? 
+                Replacements[index] : 
+                Replacements[index + 1];
+        }
+
+
         public TemplateViewModel(CodeTemplate template)
         {
             IsFromGeneration = true;
             Template = template;
 
-            var replacements = template.FindReplacements();
+            //var replacements = template.FindReplacements();
+            var replacements = template.FindAndFilterSimilarReplacements();
             GeneratedContent = template.GenerateContent(replacements);
             var rvms = replacements.Select(r => new ReplacementViewModel(r));
             Replacements = rvms.AsObservableCollection();

@@ -4,14 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
+using Unity;
 using Xamarin.Forms;
 
 namespace CodeGenerator.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<CodeTemplate> DataStore => DependencyService.Get<IDataStore<CodeTemplate>>() ?? new MockDataStore();
+        public IDataStore<CodeTemplate> DataStore => App.Container.Resolve<IDataStore<CodeTemplate>>();
 
         bool isBusy = false;
         public bool IsBusy {

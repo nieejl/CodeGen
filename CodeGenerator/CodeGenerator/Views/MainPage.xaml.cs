@@ -1,10 +1,12 @@
 ﻿using CodeGenerator.Models;
 using CodeGenerator.ViewModels;
+using CodeGenerator.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity;
 using Xamarin.Forms;
 
 namespace CodeGenerator
@@ -16,7 +18,7 @@ namespace CodeGenerator
         {
             //_vm = DependencyService.Get<MainPageViewModel>();
             InitializeComponent();
-            _vm = DependencyService.Resolve<MainPageViewModel>();
+            _vm = App.Container.Resolve<MainPageViewModel>();
             BindingContext = _vm;
         }
 
@@ -29,6 +31,10 @@ namespace CodeGenerator
             await nav.PushAsync(new TemplatePage(new TemplateViewModel(item)));
         }
 
-        
+        private async void OnAddItemClicked(object sender, EventArgs e)
+        {
+            var nav = (Application.Current as App).navPage;
+            await nav.PushAsync(new AddTemplatePage());
+        }
     }
 }

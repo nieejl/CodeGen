@@ -140,5 +140,17 @@ namespace TestCodeGenerator
 
             Assert.Equal(generation.Content, result);
         }
+        [Fact]
+        public void Test_FindAndFilterSimilarReplacements_Given_2_Similar_Removes_One()
+        {
+            var template = CreateTwoVariableTemplate();
+            var replacements = template.FindReplacements();
+
+            var result = template.FindAndFilterSimilarReplacements();
+
+            Assert.Equal(2, result.Count);
+
+
+        }
     }
 }

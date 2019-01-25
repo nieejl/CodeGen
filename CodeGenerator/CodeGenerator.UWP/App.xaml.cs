@@ -30,6 +30,11 @@ namespace CodeGenerator.UWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            RegisterServices();
+        }
+
+        public void RegisterServices()
+        {
         }
 
         /// <summary>

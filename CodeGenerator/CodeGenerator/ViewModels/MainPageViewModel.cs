@@ -19,7 +19,7 @@ namespace CodeGenerator.ViewModels
             Templates = new ObservableCollection<CodeTemplate>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
             var task = ExecuteLoadItemsCommand();
-            task.Wait();
+            Task.WaitAll(task);
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -31,7 +31,6 @@ namespace CodeGenerator.ViewModels
             {
                 var items = await DataStore.GetItemsAsync();
                 Templates.Clear();
-                //throw new Exception("KJDSALJASDH");
                 foreach (var template in items)
                 {
                     Templates.Add(template);

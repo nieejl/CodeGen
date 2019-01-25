@@ -2,18 +2,38 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace CodeGenerator.Services
 {
     public class FileIOUtil
     {
-        public static string GetTargetPath(string subPath)
+        IDirectory directory;
+        public FileIOUtil(IDirectory _directory)
         {
-            return Path.Combine(new string[] { Directory.GetCurrentDirectory(), subPath });
+            directory = _directory;
+        }
+        public string GetTargetPath(string subPath = "")
+        {
+            string basePath = directory.GetPath();
+            if (subPath == null || subPath == "")
+                return Path.Combine(new string[] { basePath, "Templates", subPath });
+            else
+                return Path.Combine(new string[] { basePath, "Templates" });
         }
 
-        public static bool WriteToFile(string targetPath, string content, bool overwrite = false)
+        public string[] GetAllFolders()
+        {
+            return Directory.GetDirectories(GetTargetPath());
+        }
+
+        public string[] GetAllFiles()
+        {
+            return Directory.GetFiles(GetTargetPath());
+        }
+
+        public bool WriteToFile(string targetPath, string content, bool overwrite = false)
         {
             if (File.Exists(targetPath) && !overwrite)
                 return false;
@@ -21,7 +41,7 @@ namespace CodeGenerator.Services
             return true;
         }
 
-        public static string ImportFileToString(string path)
+        public string ImportFileToString(string path)
         {
             if (!File.Exists(path))
                 return "";
@@ -29,7 +49,7 @@ namespace CodeGenerator.Services
             return stringContent;
         }
 
-        public static bool DeleteFile(string path)
+        public bool DeleteFile(string path)
         {
             if (!File.Exists(path))
                 return false;

@@ -10,7 +10,8 @@
         </OnPlatform>
     </ContentPage.Padding>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Item Text" 
+        <ToolbarItem Text="Add Item"
+                     Clicked="OnAddItemClicked"
                      Icon="{OnPlatform 
             Default='LargeTile.scale-400.png', 
             UWP='Assets/Square44x44Logo.altform-unplated_targetsize-256.png',

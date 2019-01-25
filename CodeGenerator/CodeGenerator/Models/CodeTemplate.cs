@@ -25,6 +25,7 @@ namespace CodeGenerator.Models
             foreach (string part in contentParts)
             {
                 sb.AppendLine(part);
+                sb.Append(Environment.NewLine);
             }
             string content = sb.ToString();
 
@@ -46,7 +47,22 @@ namespace CodeGenerator.Models
         public List<Replacement> FindAndFilterSimilarReplacements()
         {
             var replacements = FindReplacements().UnorderedRemoveDuplicates();
-            var similarities = new List<(Replacement, Replacement)>();
+
+            for (int i = 0; i < replacements.Count; i++)
+            {
+                for (int j = i+1; j < replacements.Count; j++)
+                {
+                    if (i == j) continue;
+                    var s1 = replacements[i].VarName;
+                    var s2 = replacements[j].VarName;
+                    if (s1.IsMatchWithUnderscore(s2) || s2.IsMatchWithUnderscore(s1))
+                    {
+                        var pair = new ReplacementPair { }
+                        similarities.Add((replacements[i], replacements[j]));
+                    }
+                }
+            }
+            return replacements;
             for (int i = 0; i < replacements.Count; i++)
             {
                 for (int j = 0; j < replacements.Count; j++)
@@ -75,7 +91,6 @@ namespace CodeGenerator.Models
 
                 var orgPattern = @"<<<<" + replacement.VarName + ">>>>";
                 sb.Replace(orgPattern, replacement.VarValue);
-                var res = sb.ToString();
             }
             return sb.ToString();
         }
