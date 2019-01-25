@@ -58,7 +58,7 @@ namespace CodeGenerator.Models
                     var s2 = replacements[j].VarName;
                     if (s1.ToLower() == s2.ToLower() && !added.Contains(i) && !added.Contains(j))
                     {
-                        var pair = new ReplacementPair (replacements[i], replacements[j]);
+                        var pair = new CaseReplacementPair (replacements[i], replacements[j]);
                         filteredReplacements.Add(pair);
                         added.Add(i);
                         added.Add(j);

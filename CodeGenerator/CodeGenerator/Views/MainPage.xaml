@@ -31,9 +31,9 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Padding="5">
-                            <Label Text="{Binding Id}"/>
-                            <Label Text="{Binding TemplateDescription}"/>
+                        <StackLayout>
+                            <Label Text="{Binding Id}" FontSize="14"/>
+                            <Label Text="{Binding Description}" FontSize="12"/>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

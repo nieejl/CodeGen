@@ -5,9 +5,8 @@ using System.Text;
 
 namespace CodeGenerator.Models
 {
-    public class ReplacementPair : IReplacement
+    public class CaseReplacementPair : IReplacement
     {
-        
         private Replacement LowerCaseReplacement { get; set; }
         private Replacement UpperCaseReplacement { get; set; }
 
@@ -21,14 +20,17 @@ namespace CodeGenerator.Models
         public string VarValue {
             get { return LowerCaseReplacement.VarValue; }
             set {
-                LowerCaseReplacement.VarValue = value.DeCapitalize();
-                UpperCaseReplacement.VarValue = value.Capitalize();
+                SetReplacementValues(value);
             }
+        }
+        private void SetReplacementValues(string value)
+        {
+            LowerCaseReplacement.VarValue = value.DeCapitalize();
+            UpperCaseReplacement.VarValue = value.Capitalize();
         }
 
 
-
-        public ReplacementPair(Replacement r1, Replacement r2)
+        public CaseReplacementPair(Replacement r1, Replacement r2)
         {
             if (r1.VarName.IsCapitalized())
             {
@@ -41,7 +43,7 @@ namespace CodeGenerator.Models
                 UpperCaseReplacement = r1;
             }
             else
-                throw new ArgumentException("ReplacementPair - replacement should have been filtered out.");
+                throw new ArgumentException("CaseReplacementPair - tried to make pair with no capitalized replacement.");
         }
 
         public StringBuilder ReplaceInString(StringBuilder sb)
@@ -51,6 +53,7 @@ namespace CodeGenerator.Models
             sb = LowerCaseReplacement.ReplaceInString(sb);
             return UpperCaseReplacement.ReplaceInString(sb);
         }
+
         public bool ContainsNullOrEmpty()
         {
             return LowerCaseReplacement == null || UpperCaseReplacement == null || 
