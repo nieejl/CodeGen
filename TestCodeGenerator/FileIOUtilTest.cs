@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace TestCodeGenerator
@@ -28,26 +29,26 @@ namespace TestCodeGenerator
         }
 
         [Fact]
-        public void Test_WriteToFile_Given_Existing_File_And_False_Returns_False() {
+        public async Task Test_WriteToFile_Given_Existing_File_And_False_Returns_False() {
             string root = CreateRootString();
             var ioUtil = CreateIOUtil();
             string targetPath = Path.Combine(root, "wtf_false_test.txt");
 
             File.WriteAllText(targetPath, "File not overwritten");
-            var result = ioUtil.WriteToFile(targetPath, "File Created");
+            var result = await ioUtil.WriteToFile(targetPath, "File Created");
 
             Assert.False(result);
         }
 
         [Fact]
-        public void Test_WriteToFile_Given_Existing_File_And_False_Does_Not_Write_File()
+        public async Task Test_WriteToFile_Given_Existing_File_And_False_Does_Not_Write_File()
         {
             string root = CreateRootString();
             var ioUtil = CreateIOUtil();
             string targetPath = Path.Combine(root, "wtf_false_test.txt");
 
             File.WriteAllText(targetPath, "File not overwritten");
-            ioUtil.WriteToFile(targetPath, "File Created", false);
+            await ioUtil.WriteToFile(targetPath, "File Created", false);
             var result = File.ReadAllText(targetPath);
 
             Assert.Equal("File not overwritten", result);

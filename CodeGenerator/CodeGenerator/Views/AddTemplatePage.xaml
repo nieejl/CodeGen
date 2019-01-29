@@ -3,10 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CodeGenerator.Views.AddTemplatePage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Padding="5,5,5,5" BackgroundColor="Beige">
+            <Entry Placeholder="Name" Text="{Binding Id}"/>
+            <Entry Placeholder="Description" Text="{Binding Description}"/>
+            
+            <Editor Placeholder="Content of template" 
+                    Text="{Binding Content}"
+                    VerticalOptions="FillAndExpand"
+                    />
+            
+            <Button Clicked="OnSaveButtonClicked" Text="Save"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

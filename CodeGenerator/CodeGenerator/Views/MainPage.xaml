@@ -3,12 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:CodeGenerator"
              x:Class="CodeGenerator.MainPage">
-    <ContentPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness">
-            <On Platform="UWP, Android" Value="10, 0, 0, 0"/>
-            <On Platform="iOS" Value="0, 20, 0, 0"/>
-        </OnPlatform>
-    </ContentPage.Padding>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add Item"
                      Clicked="OnAddItemClicked"
@@ -19,15 +13,21 @@
     </ContentPage.ToolbarItems>
     <StackLayout>
         <Label Text="Templates" HorizontalOptions="Center"/>
+        <Button Text="Update" Command="{Binding LoadItemsCommand}">
+            <Button.IsVisible>
+                <OnPlatform iOS="false"
+                            Android="false"
+                            UWP="true"/>
+            </Button.IsVisible>
+        </Button>
         <!-- Place new controls here -->
         <ListView ItemsSource="{Binding Templates}"
                   VerticalOptions="FillAndExpand"
-                  HasUnevenRows="true"
-                  RefreshCommand="{Binding LoadItemsCommand}"
                   IsPullToRefreshEnabled="true"
+                  RefreshCommand="{Binding LoadItemsCommand}"
                   IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                  CachingStrategy="RecycleElement"
-                  ItemTapped="OnItemTapped">
+                  ItemTapped="OnItemTapped"
+                  CachingStrategy="RecycleElement">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

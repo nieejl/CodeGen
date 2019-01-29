@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace CodeGenerator.ViewModels
 {
@@ -33,15 +34,17 @@ namespace CodeGenerator.ViewModels
                 OnPropertyChanged("Content");
             }
         }
+        public async Task<bool> SaveTemplate() {
+            return await DataStore.AddItemAsync(CreateTemplate());
+        }
 
+        public bool FilenameExist()
+        {
+            return (DataStore.GetItemAsync(Id) == null);
+        }
         private CodeTemplate CreateTemplate()
         {
             return new CodeTemplate { Id = Id, Content = Content, Description = Description };
-        }
-
-        public async Task<bool> SaveTemplate()
-        {
-            return await DataStore.AddItemAsync(CreateTemplate());
         }
     }
 }

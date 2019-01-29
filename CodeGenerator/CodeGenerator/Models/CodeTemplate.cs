@@ -16,11 +16,17 @@ namespace CodeGenerator.Models
 
         public static CodeTemplate FromString(string text)
         {
+            if (text == null || text == "")
+                return null;
             string[] parts = text.Split(new char[] { '\n' });
+
+            if (parts.Length < 3)
+                return null;
+
             string id = parts[0];
             string description = parts[1];
-
             var contentParts = parts.Skip(2);
+
             var sb = new StringBuilder();
             foreach (string part in contentParts)
             {

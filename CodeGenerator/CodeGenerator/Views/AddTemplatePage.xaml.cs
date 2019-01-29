@@ -18,6 +18,18 @@ namespace CodeGenerator.Views
 		{
 			InitializeComponent ();
             _vm = new AddTemplateViewModel();
+            BindingContext = _vm;
 		}
+
+        public async void OnSaveButtonClicked(object sender, EventArgs e)
+        {
+            if (_vm.FilenameExist())
+            {
+                bool overwrite = await DisplayAlert("File exists.", "Do you want to overwrite existing file?", "Yes", "No");
+                if (!overwrite)
+                    return;
+            }
+            await _vm.SaveTemplate();
+        } 
 	}
 }

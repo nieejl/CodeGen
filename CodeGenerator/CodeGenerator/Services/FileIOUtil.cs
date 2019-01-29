@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeGenerator.Services
 {
@@ -13,31 +14,45 @@ namespace CodeGenerator.Services
         public FileIOUtil(IDirectory _directory)
         {
             directory = _directory;
+            Task.FromResult(CreateFolderIfAbsent("Templates"));
         }
-        public string GetTargetPath(string subPath = "")
+
+
+        private async Task CreateFolderIfAbsent(string name)
         {
-            string basePath = directory.GetPath();
+            if (await directory.ContainsItemAsync("Templates"))
+                await directory.CreateDirectoryAsync("Templates");
+        }
+        public string GetSubPath(string subPath = "")
+        {
+            string basePath = "Templates";
             if (subPath == null || subPath == "")
-                return Path.Combine(new string[] { basePath, "Templates", subPath });
+                return "Templates";
             else
-                return Path.Combine(new string[] { basePath, "Templates" });
+                return Path.Combine(new string[] { basePath, subPath });
+        }
+
+        public string GetAbsolutePath()
+        {
+            return Path.Combine(directory.GetPath(), GetSubPath());
         }
 
         public string[] GetAllFolders()
         {
-            return Directory.GetDirectories(GetTargetPath());
+            return Directory.GetDirectories(GetAbsolutePath());
         }
 
         public string[] GetAllFiles()
         {
-            return Directory.GetFiles(GetTargetPath());
+            return Directory.GetFiles(GetAbsolutePath());
         }
 
-        public bool WriteToFile(string targetPath, string content, bool overwrite = false)
+        public async Task<bool> WriteToFile(string targetPath, string content, bool overwrite = false)
         {
-            if (File.Exists(targetPath) && !overwrite)
+            bool exists = await directory.ContainsItemAsync(targetPath);
+            if (exists && !overwrite)
                 return false;
-            File.WriteAllText(targetPath, content);
+            var file = await directory.CreateFileAsync(targetPath, content);
             return true;
         }
 

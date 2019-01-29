@@ -14,21 +14,18 @@ namespace CodeGenerator.Services
         public FlatFileDataStore(IDirectory directory)
         {
             IOUtil = new FileIOUtil(directory);
-            string path = IOUtil.GetTargetPath("Templates");
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
         }
 
         private const string FILE_EXTENSION = ".tem";
-        public Task<bool> AddItemAsync(CodeTemplate item)
+        public async Task<bool> AddItemAsync(CodeTemplate item)
         {
             var sb = new StringBuilder();
             sb.AppendLine(item.Id);
             sb.AppendLine(item.Description);
             sb.AppendLine(item.Content);
 
-            string targetPath = IOUtil.GetTargetPath(item.Id + FILE_EXTENSION);
-            return Task.FromResult(IOUtil.WriteToFile(targetPath, sb.ToString()));
+            string targetPath = IOUtil.GetSubPath(item.Id + FILE_EXTENSION);
+            return await IOUtil.WriteToFile(targetPath, sb.ToString());
         }
 
         public async Task<bool> DeleteItemAsync(string id)
@@ -38,7 +35,7 @@ namespace CodeGenerator.Services
 
         public async Task<CodeTemplate> GetItemAsync(string id)
         {
-            string targetPath = IOUtil.GetTargetPath(id + FILE_EXTENSION);
+            string targetPath = IOUtil.GetSubPath(id + FILE_EXTENSION);
             string template = IOUtil.ImportFileToString(targetPath);
             return await Task.FromResult(CodeTemplate.FromString(template));
         }
@@ -53,7 +50,7 @@ namespace CodeGenerator.Services
 
         public Task<bool> UpdateItemAsync(CodeTemplate item)
         {
-            string targetPath = IOUtil.GetTargetPath(item.Id + FILE_EXTENSION); 
+            string targetPath = IOUtil.GetSubPath(item.Id + FILE_EXTENSION); 
             //return FileIOUtil.WriteToFile( item.Id + FILE_EXTENSION, //TODO: implement ToString() in codetemplate and finish
             throw new NotImplementedException();
         }

@@ -15,9 +15,9 @@ namespace CodeGenerator.Views
         TemplateViewModel _vm;
 		public TemplatePage (TemplateViewModel vm)
 		{
+			InitializeComponent ();
             _vm = vm;
             BindingContext = _vm;
-			InitializeComponent ();
 		}
     }
 }

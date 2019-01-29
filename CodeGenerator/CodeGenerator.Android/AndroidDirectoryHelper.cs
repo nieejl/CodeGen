@@ -13,20 +13,31 @@ using CodeGenerator.Droid;
 using CodeGenerator.Services;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using System.Threading.Tasks;
 
 [assembly: Dependency(typeof(AndroidDirectoryHelper))]
 namespace CodeGenerator.Droid
 {
     public class AndroidDirectoryHelper : IDirectory
     {
-        public string CreateDirectory(string name)
+        public Task<bool> ContainsItemAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> CreateDirectoryAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> CreateFileAsync(string name, string content)
         {
             throw new NotImplementedException();
         }
 
         public string GetPath()
         {
-            return FileSystem.AppDataDirectory;
+            throw new NotImplementedException();
         }
 
         public bool RemoveDirectory()

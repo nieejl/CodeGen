@@ -17,11 +17,23 @@ namespace CodeGenerator.UWP
         {
             Debug.WriteLine(baseFolder.Path);
         }
-        public string CreateDirectory(string name)
+        public async Task<string> CreateDirectoryAsync(string name)
         {
-            Task.WaitAll(baseFolder.CreateFolderAsync(name).AsTask());
-            var path = "abc";
-            return path;
+            var createdFolder = await baseFolder.CreateFolderAsync(name);
+            return createdFolder.Path;
+        }
+
+        public async Task<bool> ContainsItemAsync(string name)
+        {
+            var file = await baseFolder.TryGetItemAsync(name);
+            return file != null;
+        }
+
+        public async Task<string> CreateFileAsync(string name, string content)
+        {
+            var createdFile = await baseFolder.CreateFileAsync(name);
+            await FileIO.WriteTextAsync(createdFile, content);
+            return createdFile.Path;
         }
 
         public string GetPath()

@@ -26,7 +26,7 @@
                           ItemsSource="{Binding Replacements}"
                           HorizontalOptions="Start"
                           MinimumWidthRequest="160"
-                          WidthRequest="400"
+                          WidthRequest="250"
                           RefreshCommand=""
                           IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                           IsPullToRefreshEnabled="True"
